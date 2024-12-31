@@ -1,0 +1,7 @@
+.husky/_
+es/
+lib/
+dist/
+node_modules/
+typings/
+*.log

@@ -1,0 +1,37 @@
+{
+  "name": "spiv",
+  "version": "1.0.0",
+  "description": "A pubsub",
+  "module": "es/spiv.mjs",
+  "main": "lib/spiv.js",
+  "jsnext:main": "es/spiv.mjs",
+  "umd:main": "dist/spiv.js",
+  "typings": "types/index.d.ts",
+  "exports": {
+    "types": "./types/index.d.ts",
+    "import": "./es/spiv.mjs",
+    "require": "./lib/spiv.js",
+    "default": "./es/spiv.mjs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "keywords": ["emitter", "spiv", "events", "pubsub", "eventemitter"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "rollup": "^4.29.1",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "yatter": "^1.8.0"
+  },
+  "files": ["es", "lib", "dist", "typings"]
+}

@@ -13,7 +13,7 @@ interface Callback {
   handler?: (...args: unknown[]) => unknown;
 }
 
-export function ritt() {
+export function kippa() {
   const events = new Map<string, Callback[]>();
   const waiting = new Map<string, unknown[][]>();
   const exclusiveNames = new Set<string>();
@@ -107,6 +107,6 @@ export function ritt() {
   return emitter;
 }
 
-export const emitter = ritt;
+export const emitter = kippa;
 
 export default emitter();

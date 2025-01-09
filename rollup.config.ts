@@ -9,11 +9,11 @@ export default [
     output: [
       {
         format: 'es',
-        file: 'es/ritt.mjs',
+        file: 'es/kippa.mjs',
       },
       {
         format: 'cjs',
-        file: 'lib/ritt.js',
+        file: 'lib/kippa.js',
       },
     ],
     plugins: [typescript()],
@@ -23,9 +23,9 @@ export default [
     external: ['yatter'],
     output: {
       format: 'umd',
-      file: './dist/ritt.js',
+      file: './dist/kippa.js',
       exports: 'named',
-      name: 'ritt',
+      name: 'kippa',
       globals: {
         yatter: 'yatter',
       },

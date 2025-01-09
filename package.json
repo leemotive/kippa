@@ -1,25 +1,25 @@
 {
-  "name": "ritt",
+  "name": "kippa",
   "version": "1.0.0",
   "description": "A pubsub",
-  "module": "es/ritt.mjs",
-  "main": "lib/ritt.js",
-  "jsnext:main": "es/ritt.mjs",
-  "umd:main": "dist/ritt.js",
+  "module": "es/kippa.mjs",
+  "main": "lib/kippa.js",
+  "jsnext:main": "es/kippa.mjs",
+  "umd:main": "dist/kippa.js",
   "typings": "types/index.d.ts",
   "exports": {
     "types": "./types/index.d.ts",
-    "import": "./es/ritt.mjs",
-    "require": "./lib/ritt.js",
-    "default": "./es/ritt.mjs"
+    "import": "./es/kippa.mjs",
+    "require": "./lib/kippa.js",
+    "default": "./es/kippa.mjs"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup --config rollup.config.ts --configPlugin typescript",
-    "postbuild": "uglifyjs dist/ritt.js -o dist/ritt.min.js",
+    "build": "rm -rf es lib dist & rollup --config rollup.config.ts --configPlugin typescript",
+    "postbuild": "uglifyjs dist/kippa.js -o dist/kippa.min.js",
     "prepare": "husky"
   },
-  "keywords": ["emitter", "ritt", "events", "pubsub", "eventemitter"],
+  "keywords": ["emitter", "kippa", "events", "pubsub", "eventemitter"],
   "author": "",
   "license": "ISC",
   "devDependencies": {

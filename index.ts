@@ -3,31 +3,54 @@ import { isNullOrUndef } from 'yatter';
 interface EmitOption {
   lazy?: boolean;
 }
+interface EventOption {
+  once?: boolean;
+  exclusive?: boolean;
+}
 
 interface Callback {
   (...args: unknown[]): unknown;
   handler?: (...args: unknown[]) => unknown;
 }
 
-export function spiv() {
+export function ritt() {
   const events = new Map<string, Callback[]>();
   const waiting = new Map<string, unknown[][]>();
+  const exclusiveNames = new Set<string>();
 
   const emitter = {
-    on(name: string, cb: Callback) {
+    on(name: string, cb: Callback, option?: EventOption) {
       if (!name || !cb) {
         return emitter;
       }
+
+      let wrapped = cb;
+      if (option?.once) {
+        wrapped = (...args: unknown[]) => {
+          emitter.off(name, wrapped);
+          cb(...args);
+        };
+        wrapped.handler = cb;
+      }
+
+      if (option?.exclusive) {
+        exclusiveNames.add(name);
+      }
+
       let cbs = events.get(name);
       if (!cbs) {
         cbs = [];
         events.set(name, cbs);
       }
-      cbs.push(cb);
-      for (const arg of waiting.get(name) || []) {
-        cb(...arg);
+      if (!cbs.length || !exclusiveNames.has(name)) {
+        cbs.push(wrapped);
       }
 
+      const waitingQueue = waiting.get(name) || [];
+      waiting.delete(name);
+      for (const arg of waitingQueue) {
+        wrapped(...arg);
+      }
       return emitter;
     },
     off(name: string, cb: Callback) {
@@ -55,9 +78,9 @@ export function spiv() {
       return emitter;
     },
     emit(name: string, ...args: unknown[]) {
-      return emitter.send(name, { lazy: false }, ...args);
+      return emitter.pub(name, { lazy: false }, ...args);
     },
-    send(name: string, op?: EmitOption, ...args: unknown[]) {
+    pub(name: string, op?: EmitOption, ...args: unknown[]) {
       const handlers = events.get(name);
       for (const cb of handlers?.slice() || []) {
         try {
@@ -77,19 +100,13 @@ export function spiv() {
       return emitter;
     },
     once(name: string, cb: Callback) {
-      const wrapped: Callback = (...args) => {
-        emitter.off(name, wrapped);
-        cb(...args);
-      };
-      wrapped.handler = cb;
-      emitter.on(name, wrapped);
-      return emitter;
+      return emitter.on(name, cb, { once: true });
     },
   };
 
   return emitter;
 }
 
-export const emitter = spiv;
+export const emitter = ritt;
 
 export default emitter();

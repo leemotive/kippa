@@ -1,23 +1,25 @@
 {
-  "name": "spiv",
+  "name": "ritt",
   "version": "1.0.0",
   "description": "A pubsub",
-  "module": "es/spiv.mjs",
-  "main": "lib/spiv.js",
-  "jsnext:main": "es/spiv.mjs",
-  "umd:main": "dist/spiv.js",
+  "module": "es/ritt.mjs",
+  "main": "lib/ritt.js",
+  "jsnext:main": "es/ritt.mjs",
+  "umd:main": "dist/ritt.js",
   "typings": "types/index.d.ts",
   "exports": {
     "types": "./types/index.d.ts",
-    "import": "./es/spiv.mjs",
-    "require": "./lib/spiv.js",
-    "default": "./es/spiv.mjs"
+    "import": "./es/ritt.mjs",
+    "require": "./lib/ritt.js",
+    "default": "./es/ritt.mjs"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup --config rollup.config.ts --configPlugin typescript",
+    "postbuild": "uglifyjs dist/ritt.js -o dist/ritt.min.js",
     "prepare": "husky"
   },
-  "keywords": ["emitter", "spiv", "events", "pubsub", "eventemitter"],
+  "keywords": ["emitter", "ritt", "events", "pubsub", "eventemitter"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -28,7 +30,8 @@
     "rollup": "^4.29.1",
     "rollup-plugin-dts": "^6.1.1",
     "tslib": "^2.8.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "uglify-js": "^3.19.3"
   },
   "dependencies": {
     "yatter": "^1.8.0"

@@ -8,14 +8,12 @@ export default [
     external: ['yatter'],
     output: [
       {
-        dir: 'es',
         format: 'es',
-        file: 'spiv.mjs',
+        file: 'es/ritt.mjs',
       },
       {
-        dir: 'lib',
         format: 'cjs',
-        file: 'spiv.js',
+        file: 'lib/ritt.js',
       },
     ],
     plugins: [typescript()],
@@ -25,9 +23,9 @@ export default [
     external: ['yatter'],
     output: {
       format: 'umd',
-      file: './dist/spiv.js',
+      file: './dist/ritt.js',
       exports: 'named',
-      name: 'spiv',
+      name: 'ritt',
       globals: {
         yatter: 'yatter',
       },

@@ -1,5 +1,3 @@
-import { isNullOrUndef } from 'yatter';
-
 interface EmitOption {
   lazy?: boolean;
 }
@@ -13,13 +11,15 @@ interface Callback {
   handler?: (...args: unknown[]) => unknown;
 }
 
+type EventKey = unknown;
+
 export function kippa() {
-  const events = new Map<string, Callback[]>();
-  const waiting = new Map<string, unknown[][]>();
-  const exclusiveNames = new Set<string>();
+  const events = new Map<EventKey, Callback[]>();
+  const waiting = new Map<EventKey, unknown[][]>();
+  const exclusiveNames = new Set<EventKey>();
 
   const emitter = {
-    on(name: string, cb: Callback, option?: EventOption) {
+    on(name: EventKey, cb: Callback, option?: EventOption) {
       if (!name || !cb) {
         return emitter;
       }
@@ -53,21 +53,21 @@ export function kippa() {
       }
       return emitter;
     },
-    off(name: string, cb: Callback) {
+    off(name: EventKey, cb: Callback) {
       if (!name || !cb) {
         return emitter;
       }
       const cbs = events.get(name);
 
-      const index = cbs?.findIndex((handler) => handler === cb || handler.handler === cb);
-      if (isNullOrUndef(index) || !~index) {
+      const index = cbs?.findIndex((handler) => handler === cb || handler.handler === cb) ?? -1;
+      if (!~index) {
         return emitter;
       }
       cbs?.splice(index, 1);
 
       return emitter;
     },
-    clear(name?: string, cb?: Callback) {
+    clear(name?: EventKey, cb?: Callback) {
       if (!name) {
         events.clear();
       } else if (!cb) {
@@ -77,12 +77,17 @@ export function kippa() {
       }
       return emitter;
     },
-    emit(name: string, ...args: unknown[]) {
+    emit(name: EventKey, ...args: unknown[]) {
       return emitter.pub(name, { lazy: false }, ...args);
     },
-    pub(name: string, op?: EmitOption, ...args: unknown[]) {
-      const handlers = events.get(name);
-      for (const cb of handlers?.slice() || []) {
+    pub(name: EventKey, op?: EmitOption, ...args: unknown[]) {
+      if (name === '*') {
+        return emitter;
+      }
+      const handlers = events.get(name) ?? [];
+      const allHandlers = events.get('*') ?? [];
+
+      for (const cb of [...handlers, ...allHandlers]) {
         try {
           cb(...args);
         } catch (e) {
@@ -97,9 +102,10 @@ export function kippa() {
         }
         argQueue.push(args);
       }
+
       return emitter;
     },
-    once(name: string, cb: Callback) {
+    once(name: EventKey, cb: Callback) {
       return emitter.on(name, cb, { once: true });
     },
   };

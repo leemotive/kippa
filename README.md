@@ -15,10 +15,10 @@ Then you can use it via ESM, CJS and UMD
 
 ```js
 // ESM
-import emitter from 'kippa';
+import {emitter, kippa} from 'kippa';
 
 // CommonJS
-const kippa = require('kippa');
+const {emitter, kippa} = require('kippa');
 
 ```
 UMD is available at `window.kippa`
@@ -30,7 +30,7 @@ UMD is available at `window.kippa`
 
 # Usage
 ```js 
-import emitter from 'kippa';  // emitter is a global instance
+import { emitter } from 'kippa';  // emitter is a global instance
 
 // subscribe an event
 emitter.on('event', console.log);
@@ -52,10 +52,10 @@ emitter.off('event', console.log);
 
 # API
 
-The default export is a global instance. The named export `emitter` or `kippa` is a factory function, you can call it to create a new instance
+The named export `emitter` is a global instance. The named export `kippa` is a factory function, you can call it to create a new instance
 ```js
-import emitter, { kippa } from 'kippa';
-// default export, emitter is a global instance
+import { emitter, kippa } from 'kippa';
+// emitter is a global instance
 const emitter1 = kippa();
 // emitter1 is a new instance
 ```

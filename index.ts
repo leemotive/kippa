@@ -7,8 +7,8 @@ interface EventOption {
 }
 
 interface Callback {
-  (...args: unknown[]): unknown;
-  handler?: (...args: unknown[]) => unknown;
+  (...args: any[]): any;
+  handler?: (...args: any[]) => any;
 }
 
 type EventKey = unknown;
@@ -113,6 +113,4 @@ export function kippa() {
   return emitter;
 }
 
-export const emitter = kippa;
-
-export default emitter();
+export const emitter = kippa();
